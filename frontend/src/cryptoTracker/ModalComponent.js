@@ -15,7 +15,7 @@ Modal.setAppElement('#root');
 const ModalComponent = ({ isOpen, onRequestClose }) => {
     const [selectedCryptoCoin, setSelectedCryptoCoin] = useState({});
     const [selectedCurrency, setSelectedCurrency] = useState({});
-    const [inputNumber, setInputNumber] = useState('');
+    const [inputAmount, setinputAmount] = useState('');
     const [result, setResult] = useState(null);
 
     const { currencies } = useFetchCurrencies();
@@ -33,27 +33,35 @@ const ModalComponent = ({ isOpen, onRequestClose }) => {
         label: `${coins?.name.toUpperCase()} (${coins?.symbol})`,
     }));
 
-    const handleSubmit = async() => {
+    const resetState = () => {
+        setSelectedCryptoCoin({});
+        setSelectedCurrency({});
+        setinputAmount('');
+        setResult(null);
+      };
+    
+    const handleSubmit = async () => {
 
-        if (!selectedCryptoCoin?.value || !selectedCurrency?.value || !inputNumber) {
+        if (!selectedCryptoCoin?.value || !selectedCurrency?.value || !inputAmount) {
             toast.warn('Pls fill all required feild', { position: toast.POSITION.TOP_CENTER })
             return
         }
 
-        const res = await getCryptoAmount({ selectedCryptoCoin, selectedCurrency })
-
+        const res = await  getCryptoAmount({ selectedCryptoCoin, selectedCurrency,inputAmount })
+   
         if (res) {
-            setResult(`Amount for Crypto Coin is ${res[selectedCryptoCoin?.value]?.selectedCoin?.value}`);
+            setResult(`Total Amount of Crypto Coin ${selectedCryptoCoin?.label} for Currency ${selectedCurrency?.label} is ${(res?.total_amount).toFixed(4)}`);
         }
-        setSelectedCryptoCoin({});
-        setSelectedCryptoCoin({});
-
+     
     };
 
     return (
         <Modal
             isOpen={isOpen}
-            onRequestClose={onRequestClose}
+            onRequestClose={() => {
+                resetState();
+                onRequestClose();
+            }}
             contentLabel="Example Modal"
             style={{
                 overlay: {
@@ -68,11 +76,11 @@ const ModalComponent = ({ isOpen, onRequestClose }) => {
             }}
         >
             <ModalWrapper>
-                <ModalHeading>View Crypto Amount</ModalHeading>
+                <ModalHeading>Get Crypto Amount</ModalHeading>
                 <FieldWrapper>
-                    <Label>Select Crypto Currency:</Label>
+                    <Label>Select Crypto Coin:</Label>
                     <Select
-                        placeholder='Select Crypto Currency'
+                        placeholder='Select Crypto Coin'
                         value={selectedCryptoCoin}
                         onChange={(selectedCoin) => setSelectedCryptoCoin(selectedCoin)}
                         options={COINS_OPTIONS}
@@ -83,6 +91,7 @@ const ModalComponent = ({ isOpen, onRequestClose }) => {
                     <Label>Select Target Currency:</Label>
                     <Select
                         placeholder='Select Currency'
+                        defaultValue={{ value: 'usd', label: 'USD' }}
                         value={selectedCurrency}
                         onChange={(selectedCurrency) => setSelectedCurrency(selectedCurrency)}
                         options={CURRENCY_OPTIONS}
@@ -93,15 +102,15 @@ const ModalComponent = ({ isOpen, onRequestClose }) => {
                     <InputField
                         type="number"
                         placeholder='Enter Amount'
-                        value={inputNumber}
-                        onChange={(e) => setInputNumber(e.target.value)}
+                        value={inputAmount}
+                        onChange={(e) => setinputAmount(e.target.value)}
 
                     />
                 </FieldWrapper>
                 <ButtonDiv>
                     <SubmitButton onClick={handleSubmit}>Submit</SubmitButton>
                 </ButtonDiv>
-                {result && <ResultParagraph>{result}</ResultParagraph>}
+                {!result ? <p>See your result here after Submit</p>  : <ResultParagraph>{result}</ResultParagraph> }
             </ModalWrapper>
         </Modal>
     );

@@ -5,14 +5,21 @@ import 'react-toastify/dist/ReactToastify.css'
 
 function useGetAmount() {
 
-    async function getCryptoAmount({ selectedCryptoCoin, selectedCurrency }) {
-        console.log({selectedCryptoCoin,selectedCurrency,})
+    async function getCryptoAmount({ selectedCryptoCoin = {}, selectedCurrency = {}, inputAmount = '' }) {
+
+        const coin_id = selectedCryptoCoin?.value;
+        const currency = selectedCurrency?.value;
         try {
-            const res = await axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=${selectedCryptoCoin?.value}&vs_currencies=${selectedCurrency?.value}`);
-            const result = res.data;
+            const response = await axios.post('http://localhost:3000/get/amount', {
+                coin_id,
+                currency,
+                inputAmount,
+            });
+          
+            const result = response.data;
             return result
         } catch (err) {
-            toast.error(`${err} Pls Try after some time`, {position: toast.POSITION.TOP_CENTER})
+            toast.error(`${err} Pls Try after some time`, { position: toast.POSITION.TOP_CENTER })
         }
     }
 

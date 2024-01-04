@@ -9,7 +9,7 @@ function useFetchTrendingCoins() {
 
     async function fetchTrendingCoins() {
         try {
-            const res = await axios.get('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=gecko_desc&per_page=10&page=1&sparkline=false&price_change_percentage=24h');
+            const res = await axios.get('http://localhost:3000/get/trending_coins');
             const result = res.data;
             setTrendingCoins(result);
         } catch (err) {

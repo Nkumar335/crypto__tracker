@@ -9,7 +9,7 @@ function useFetchCurrencies() {
 
     async function fetchCurrencies() {
         try {
-            const res = await axios.get('https://api.coingecko.com/api/v3/simple/supported_vs_currencies');
+            const res = await axios.get('http://localhost:3000/currenies');
             const result = res.data;
             setCurrencies(result);
         } catch (err) {

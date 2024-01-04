@@ -10,7 +10,7 @@ function useFetchCryptoCoins() {
 
     async function fetchCryptoCoins() {
         try {
-            const res = await axios.get('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false');
+            const res = await axios.get('http://localhost:3000/crypto_coins');
             const result = res.data;
             setCryptoCoins(result);
         } catch (err) {

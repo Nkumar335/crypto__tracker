@@ -126,9 +126,9 @@ export const SubmitButton = styled.button`
 `;
 
 export const ResultParagraph = styled.p`
-  margin-top: 15px;
-  font-size: 16px;
-  color: #333;
+  margin-top: 25px;
+  font-size: 20px;
+  color: #FF0000;
 `;
 
 export const EmptyStateContainer = styled.div`
