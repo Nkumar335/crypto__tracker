@@ -10,7 +10,7 @@ function useFetchCryptoCoins() {
 
     async function fetchCryptoCoins() {
         try {
-            const res = await axios.get('http://localhost:3000/crypto_coins');
+            const res = await axios.get('https://crypto-tracker-backend-five.vercel.app/crypto_coins');
             const result = res.data;
             setCryptoCoins(result);
         } catch (err) {

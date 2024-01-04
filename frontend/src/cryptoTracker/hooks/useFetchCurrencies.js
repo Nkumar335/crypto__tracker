@@ -9,7 +9,7 @@ function useFetchCurrencies() {
 
     async function fetchCurrencies() {
         try {
-            const res = await axios.get('http://localhost:3000/currenies');
+            const res = await axios.get('https://crypto-tracker-backend-five.vercel.app/currenies');
             const result = res.data;
             setCurrencies(result);
         } catch (err) {

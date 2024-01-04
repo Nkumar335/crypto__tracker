@@ -9,7 +9,7 @@ function useFetchTrendingCoins() {
 
     async function fetchTrendingCoins() {
         try {
-            const res = await axios.get('http://localhost:3000/get/trending_coins');
+            const res = await axios.get('https://crypto-tracker-backend-five.vercel.app/get/trending_coins');
             const result = res.data;
             setTrendingCoins(result);
         } catch (err) {

@@ -10,7 +10,7 @@ function useGetAmount() {
         const coin_id = selectedCryptoCoin?.value;
         const currency = selectedCurrency?.value;
         try {
-            const response = await axios.post('http://localhost:3000/get/amount', {
+            const response = await axios.post('https://crypto-tracker-backend-five.vercel.app/get/amount', {
                 coin_id,
                 currency,
                 inputAmount,
