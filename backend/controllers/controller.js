@@ -6,7 +6,6 @@ async function handleGetCurrencies(req, res) {
         const data = response.data;
 
         res.json(data);
-        console.log('response', response);
     } catch (error) {
         res.status(500).send('Internal Server Error from API');
     }
@@ -30,7 +29,7 @@ async function handleGetTrendingCoins(req, res) {
         const data = response.data;
 
         res.json(data);
-    
+
     } catch (error) {
         res.status(500).send('Internal Server Error');
     }
@@ -38,20 +37,23 @@ async function handleGetTrendingCoins(req, res) {
 
 async function handleConvertAmount(req, res) {
 
-    const { currency, coin_id } = req.body;
+    const { coin_id, currency, inputAmount } = req.body;
 
-    console.log(currency, coin_id)
-
-    if(!coin_id || !currency ) {
-        return res.status(400).json({error : 'Pls fill all required fields'})
+    if (!coin_id || !currency || !inputAmount) {
+        return res.status(400).json({ error: 'Pls fill all required fields' })
     }
 
     try {
         const response = await axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=${coin_id}&vs_currencies=${currency}`);
         const data = response.data;
 
-        res.json(data);
-    
+        if (!data) {
+            return res.status(500).json({ error: 'Server Error Pls try after some time' })
+        }
+        const price = data[coin_id][currency];
+        const totalPrice = price * inputAmount;
+        res.json({ total_amount: totalPrice });
+
     } catch (error) {
         res.status(500).send('Internal Server Error');
     }
